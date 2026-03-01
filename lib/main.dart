@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:quotes_list/qoute.dart';
+import 'quote.dart';
+import 'quote_card.dart';
 
 void main() {
   runApp(MaterialApp(home: QuoteList()));
@@ -14,51 +15,28 @@ class QuoteList extends StatefulWidget {
 }
 
 class _QuoteListState extends State<QuoteList> {
-  List<Qoute> quotes = [
-    Qoute(
+  List<Quote> quotes = [
+    Quote(
       text:
           'The only limit to our realization of tomorrow will be our doubts of today.',
       author: 'Franklin D. Roosevelt',
     ),
-    Qoute(
+    Quote(
       text:
           'Life is not measured by the number of breaths we take, but by the moments that take our breath away.',
       author: 'Maya Angelou',
     ),
-    Qoute(
+    Quote(
       text:
           'You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.',
       author: 'Dr. Seuss',
     ),
   ];
 
-  Widget quoteTemplate(Qoute quote) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              '"${quote.text}"',
-              textAlign: TextAlign.justify,
-              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-            ),
-            SizedBox(height: 6),
-            Text(
-              quote.author,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[800],
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
+  void _deleteQuote(Quote quote) {
+    setState(() {
+      quotes.remove(quote);
+    });
   }
 
   @override
@@ -74,7 +52,12 @@ class _QuoteListState extends State<QuoteList> {
         backgroundColor: Colors.redAccent,
       ),
       body: Column(
-        children: quotes.map((quote) => quoteTemplate(quote)).toList(),
+        children: quotes
+            .map(
+              (quote) =>
+                  QuoteCard(quote: quote, delete: () => _deleteQuote(quote)),
+            )
+            .toList(),
       ),
     );
   }
